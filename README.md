@@ -3,10 +3,18 @@
 关于arch安装的一个脚本
 
 ### Download
+无**Uefi* *的可以用下面的脚本
 ```
 dhcpcd
-wget raw.githubusercontent.com/xylzq/arch/master/setup.sh
+wget linuxyu.oss-cn-beijing.aliyuncs.com/setup.sh
 ```
+电脑有**Uefi** 的可以用一下脚本
+```
+dhcpcd
+wget linuxyu.oss-cn-beijing.aliyuncs.com/setup-efi.sh
+```
+
+
 无法链接github的朋友可以使用下面的链接
 ```
 wget gitee.com/xylzq/arch/raw/master/setup.sh
@@ -45,13 +53,83 @@ nano /etc/lightdm/lightdm.conf
 
 # archlinux config script
 
-关于arch配置美化的一个脚本
+关于arch配置美化的一个脚本，其中**config** 脚本中包含了*Kde* 的桌面环境
+
+### 一些注意事项
+当安装完桌面可能进入不了桌面，需要安装下
+```
+sudo pacman -S xorg xorg-service
+```
+
+授权的用户可能进入不了桌面，可以设创建置下用户权限，或者重新一个用户进入系统
+```
+sudo useradd -m -G wheel david
+```
+
+
 
 ### Download
 ```
 sudo pacman -S wget git
-wget raw.githubusercontent.com/xylzq/arch/master/config.sh
+wget linuxyu.oss-cn-beijing.aliyuncs.com/config.sh
+bash config.sh
 ```
+
+### Fcitx5 问题
+装完输入法可能在终端或某些程序中无法使用的情况
+将以下代码加入到~/.xprofile
+
+```
+export LANG=zh_CN.UTF-8
+export LANGUAGE=zh_CN:en_US
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS="@im=fcitx5"
+
+```
+### 无法调节屏幕亮度的问题
+调节屏幕亮度的文件有执行权限`light -A -U` 才有用
+```
+sudo chmod a+rw /sys/class/backlight/intel_backlight/brightness
+
+```
+
+### Qv2ray代理的安装
+```
+aria2c https://linuxyu.oss-cn-beijing.aliyuncs.com/qv2ray.zip
+```
+
+
+给文件添加可执行权限
+```
+sudo chmod a+x Qv2ray-v2.7.0-linux-x64.AppImage
+
+```
+### 安装`kite` 
+
+```
+aria2c https://centos5.oss-us-east-1.aliyuncs.com/kite.zip
+```
+将解压出来的`kite/kitexx`  将kitexx改名为kite
+再将`kite/kite`  这个文件夹放入到`.local/share` 目录下
+
+### 安装Dwm
+安装完成之后将`dwm` 加入到系统启动项里面
+新建`/usr/share/xsessions/dwm.desktop` 中间某个目录没有就创建他
+在`dwm.desktop` 加入一下内容
+```
+[Desktop Entry]
+Encoding=UTF-8
+Name=Dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession
+
+```
+#### TODO ArchLinux的备份和迁移
+
+
 
 ### explain
 - 主要配置有，添加archlinuxcn等源
