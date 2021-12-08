@@ -127,9 +127,41 @@ Icon=dwm
 Type=XSession
 
 ```
-#### TODO ArchLinux的备份和迁移
+### TODO ArchLinux的备份和迁移
+### U盘在linux中拷贝文件的方式
 
 
+#### 备份
+
+linux插入U盘，需要用到硬盘工具`fdisk` 
+
+`fdisk -l` 查看所有的硬盘，如果你的U盘是系统引导盘，需要将闲置空间分为一个扇区方法是
+```
+fdisk /dev/sde
+```
+
+先进入U盘，进入之后按`n` 新建分区，两个`Enter` ,将所有闲置空间留给`sde3`拷贝的方式是将U盘挂载到系统的`/mnt`
+```
+mount /dev/sde3 /mnt
+cd /mnt
+ls
+sudo cp /arch-backup.tgz /mnt
+```
+
+#### 还原
+
+[archlinux迁移](https://blog.csdn.net/taotieren/article/details/111413045) 其中需要注意的是`liveCD` 中有三个分区，分别是`sde1` `sde2` `sde3` , 前两个分区是系统的引导，`sde3` 中包含系统的备份`arch-backup.tgz` , 我们需要将`sde3` 挂载到`/mnt/arch/backup` 文件夹中，没有就新建
+``` 
+sudo mount /dev/sde3 /mnt/arch/backup
+cd /mnt/backup
+
+```
+
+下面就是`pigz` 恢复archliunx系统
+```
+sudo tar --use-compress-program=pigz -cvpf arch-backup.tgz -C /mnt/arch
+
+```
 
 ### explain
 - 主要配置有，添加archlinuxcn等源
