@@ -155,7 +155,67 @@ cd /mnt
 ls
 sudo cp /arch-backup.tgz /mnt
 ```
+#### Macbook 觸控板手势
+```
+yay -S xf86-input-mtrack
+```
 
+`sudo nvim /etc/X11/xorg.conf.d/50-mtrack.conf` 加入下面内容:
+```
+Section "InputClass"
+    MatchIsTouchpad "on"
+    Identifier      "Touchpads"
+    Driver          "mtrack"
+
+    Option "TapDragTime" "150"
+    Option "Sensitivity" "0.35"
+    Option "AccelerationProfile" "2"
+    Option "ConstantDeceleration" "2.5"
+    Option "AccelerationVelocityScaling" "5"
+
+    Option "ScrollDistance" "150"
+    Option "ScrollUpButton" "5"
+    Option "ScrollDownButton" "4"
+    Option "ScrollLeftButton" "7"
+    Option "ScrollRightButton" "6"
+    Option "ScrollCoastDuration" "500"
+    Option "ScrollCoastEnableSpeed" "5"
+
+    Option "SwipeClickTime" "0"
+    Option "SwipeSensitivity" "1200"
+
+    Option "SwipeDistance" "1"
+    Option "SwipeLeftButton" "1"
+    Option "SwipeRightButton" "1"
+    Option "SwipeUpButton" "1"
+    Option "SwipeDownButtn" "1"
+
+    Option "Swipe4LeftButton" "9"
+    Option "Swipe4RightButton" "8"
+    Option "Swipe4UpButton" "11"
+    Option "Swipe4DownButton" "10"
+
+    Option "ScaleDistance" "300"
+    Option "ScaleUpButton" "12"
+    Option "ScaleDownButton" "13"
+    Option "RotateLeftButton" "0"
+    Option "RotateRightButton" "0"
+EndSection
+o
+```
+
+`sudo vim /etc/X11/xorg.conf.d/10-mtrack.conf` 加入下面内容：
+```
+Section "InputClass"
+  Identifier "Multitouch Touchpad"
+  Driver "mtrack"
+  MatchDevicePath "/dev/input/event*"
+  MatchProduct "bcm5974"
+  MatchIsTouchpad "true"
+EndSection
+```
+
+代码实现了`自然滚动` `滚动惯性` `三指拖放` `光标加速` `四指滑动` , 三指可以拖放选择，四指可以实现前进后退
 
 
 
