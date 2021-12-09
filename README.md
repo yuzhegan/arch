@@ -132,6 +132,14 @@ Type=XSession
 
 
 #### 备份
+下面就是`pigz` 备份archliunx系统, 执行命令的路径为`/` 
+```
+sudo tar --use-compress-program=pigz -cvpf arch-backup.tgz --exclude=/proc --exclude=/lost+found --exclude=/arch-backup.tgz --exclude=/mnt --exclude=/sys --exclude=/run/media  --exclude=/media  /
+
+```
+`--exclude`后面跟的是需要排除的路径，根据自己文件系统挂载情况觉得
+
+`--exclude=/arch-backup.tgz` 这个一定要写，要不会进入四循环
 
 linux插入U盘，需要用到硬盘工具`fdisk` 
 
@@ -148,12 +156,16 @@ ls
 sudo cp /arch-backup.tgz /mnt
 ```
 
+
+
+
+
 #### 还原
 
 [archlinux迁移](https://blog.csdn.net/taotieren/article/details/111413045) 其中需要注意的是`liveCD` 中有三个分区，分别是`sde1` `sde2` `sde3` , 前两个分区是系统的引导，`sde3` 中包含系统的备份`arch-backup.tgz` , 我们需要将`sde3` 挂载到`/mnt/arch/backup` 文件夹中，没有就新建
 ``` 
 sudo mount /dev/sde3 /mnt/arch/backup
-cd /mnt/backup
+cd /mnt/arch/backup
 
 ```
 
