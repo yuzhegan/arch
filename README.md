@@ -127,7 +127,6 @@ Icon=dwm
 Type=XSession
 
 ```
-### TODO ArchLinux的备份和迁移
 ### U盘在linux中拷贝文件的方式
 
 
@@ -154,6 +153,21 @@ mount /dev/sde3 /mnt
 cd /mnt
 ls
 sudo cp /arch-backup.tgz /mnt
+```
+
+#### 还原
+
+[archlinux迁移](https://blog.csdn.net/taotieren/article/details/111413045) 其中需要注意的是`liveCD` 中有三个分区，分别是`sde1` `sde2` `sde3` , 前两个分区是系统的引导，`sde3` 中包含系统的备份`arch-backup.tgz` , 我们需要将`sde3` 挂载到`/mnt/arch/backup` 文件夹中，没有就新建
+``` 
+sudo mount /dev/sde3 /mnt/arch/backup
+cd /mnt/arch/backup
+
+```
+
+下面就是`pigz` 恢复archliunx系统
+```
+sudo tar --use-compress-program=pigz -cvpf arch-backup.tgz -C /mnt/arch
+
 ```
 #### Macbook 觸控板手势
 ```
@@ -217,23 +231,25 @@ EndSection
 
 代码实现了`自然滚动` `滚动惯性` `三指拖放` `光标加速` `四指滑动` , 三指可以拖放选择，四指可以实现前进后退
 
-
-
-
-#### 还原
-
-[archlinux迁移](https://blog.csdn.net/taotieren/article/details/111413045) 其中需要注意的是`liveCD` 中有三个分区，分别是`sde1` `sde2` `sde3` , 前两个分区是系统的引导，`sde3` 中包含系统的备份`arch-backup.tgz` , 我们需要将`sde3` 挂载到`/mnt/arch/backup` 文件夹中，没有就新建
-``` 
-sudo mount /dev/sde3 /mnt/arch/backup
-cd /mnt/arch/backup
-
+### macbook电脑`fn` `left_ctrl` 互换
+```
+yay -S hid-apple-patched-git-dkms 
 ```
 
-下面就是`pigz` 恢复archliunx系统
+然后在编辑`hid-apple-patched-git-dkms ` 配置文件之后重启就能生效
 ```
-sudo tar --use-compress-program=pigz -cvpf arch-backup.tgz -C /mnt/arch
+options hid_apple swap_fn_leftctrl=1
+```
+至此对`macbook` 的特殊配置基本完成
+还有一个风扇的驱动`mbpfan` :
+```
+yay -S mbpfan
+```
 
-```
+
+
+
+
 
 ### explain
 - 主要配置有，添加archlinuxcn等源
