@@ -87,6 +87,63 @@ export QT_IM_MODULE=fcitx5
 export XMODIFIERS="@im=fcitx5"
 
 ```
+
+
+
+
+如果还是不行就做以下操作：
+将以下代码加入到 `～/.xprofile` 
+```
+export LC_ALL=zh_CN.UTF-8
+export XIM=fcitx5
+export XIM_PROGRAM=fcitx5
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS="@im=fcitx5"
+exec fcitx5&
+```
+然后在编辑下`vim ~/.config/fcitx5/profile` 
+```
+[Groups/0]
+# Group Name
+Name=Default
+# Layout
+Default Layout=us
+# Default Input Method
+DefaultIM=pinyin
+
+[Groups/0/Items/0]
+# Name
+Name=keyboard-us
+# Layout
+Layout=
+
+[Groups/0/Items/1]
+# Name
+Name=pinyin
+# Layout
+Layout=
+
+[GroupOrder]
+0=Default
+```
+
+再修改下`~/.pam_environment `, 加入以下内容：
+```
+GTK_IM_MODULE=fcitx5
+QT_IM_MODULE=fcitx5
+XMODIFIERS="@im=fcitx5"
+```
+
+
+
+
+
+
+
+
+
+
 ### 无法调节屏幕亮度的问题
 调节屏幕亮度的文件有执行权限`light -A -U` 才有用
 ```
