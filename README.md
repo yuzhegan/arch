@@ -293,7 +293,7 @@ EndSection
 yay -S hid-apple-patched-git-dkms 
 ```
 
-然后在编辑`hid-apple-patched-git-dkms ` 配置文件之后重启就能生效
+然后在编辑`hid-apple-patched-git-dkms ` 配置文件之后重启就能生效,`/etc/modprobe.d/hid_apple.conf` 
 ```
 options hid_apple swap_fn_leftctrl=1
 ```
