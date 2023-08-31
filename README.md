@@ -134,12 +134,69 @@ GTK_IM_MODULE=fcitx5
 QT_IM_MODULE=fcitx5
 XMODIFIERS="@im=fcitx5"
 ```
+Thinkpad x1c trackpoint
+```bash
+sudo pacman -S xorg-xinput
+#显示所有输入设备，找到TrackPoint的id
+xinput list
+#我的笔记本上TrackPoint的id是12                    
+
+vi ~/scripts/trackpoint.sh # add blow content
 
 
+xinput set-int-prop 12 "Evdev Wheel Emulation" 8 1
+xinput set-int-prop 12 "Evdev Wheel Emulation Button" 8 2
+xinput set-int-prop 12 "Evdev Wheel Emulation Timeout" 8 200
+xinput set-int-prop 12 "Evdev Wheel Emulation Axes" 8 6 7 4 5
+# 然后…高速~~高灵敏度~~~
+sudo nvim /etc/rc.local
 
+echo -n 120 > /sys/devices/platform/i8042/serio1/speed
+echo -n 250 > /sys/devices/platform/i8042/serio1/sensitivity
 
+chmod +x /etc/rc.local
 
+then reboot the mechine
 
+```
+硬件改caps_lock2esc
+```
+git clone https://gitlab.com/interception/linux/plugins/caps2esc.git
+cd caps2esc
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+
+```
+1. 大佬直接提供了AUR包，arch/Manjaro直接使用下列代码安装
+```fish
+yay -S interception-tools
+sudo ln -s caps2esc/build/caps2esc /usr/bin/caps2esc
+# 将编译好的
+```
+
+2. 安装好了以后，在`安装好了以后，在/etc/udevmon.yaml添加下列代码` 添加下列代码
+```
+- JOB: intercept -g $DEVNODE | caps2esc | uinput -d $DEVNODE
+  DEVICE:
+    EVENTS:
+      EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
+```
+3. 在`在/etc/systemd/system/udevmon.service中添加下列代码` 中添加下列代码
+```config
+[Unit]
+Description=udevmon
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
+
+[Service]
+ExecStart=/usr/bin/nice -n -20 /usr/bin/udevmon -c /etc/udevmon.yaml
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+4. 最后使用`最后使用sudo systemctl enable --now udevmon来启动` 来启动.
 
 
 
