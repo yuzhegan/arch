@@ -198,6 +198,14 @@ WantedBy=multi-user.target
 
 4. 最后使用`最后使用sudo systemctl enable --now udevmon来启动` 来启动.
 
+## 电源管理器
+```bash
+sudo pacman -S mate-power-manager
+# 将其加入到 `~/scripts/autostart.sh` 
+mate-power-manager &
+```
+
+
 
 
 
